@@ -25,6 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.demo.adladl.SettingsActivity"
+            android:label="@string/action_settings"  
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="com.demo.adladl.MainActivity" >
+        </activity>
+        
     </application>
 
 </manifest>
