@@ -21,20 +21,24 @@ import android.provider.Settings.Secure;
 public class MainActivity extends Activity {
 	
 	private int score = 0;
+	public static String droidId;
+	public static WebView adwebv;
 	public static MainActivity mnact;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mnact = this;
 		setContentView(R.layout.activity_main);
 		
 		
-		WebView webv = (WebView)findViewById(R.id.adViewer);
-		String droidId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+		adwebv = (WebView)findViewById(R.id.adViewer);
+		droidId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
 //		System.out.println("Android ID : " + droidId);
 		
-		loadAds(webv, droidId);
-		mnact = this;
+		loadAds(adwebv, droidId);
+		
 	}
 
 	@Override
@@ -54,7 +58,14 @@ public class MainActivity extends Activity {
 		if (id == R.id.action_settings) {
 			toSettings(item);
 			return true;
+		} else if (id == R.id.clearads) {
+			Toast.makeText(getBaseContext(), "Clear Ads",
+					Toast.LENGTH_LONG).show();
+			
+			clearAds(adwebv, droidId);
+			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -75,8 +86,8 @@ public class MainActivity extends Activity {
 			
 			if (score % 5 == 0) {
 				textv.setTextColor(Color.rgb(255,100,100));
-				WebView webv = (WebView)findViewById(R.id.adViewer);
-				webv.loadUrl("javascript:prizewon()");
+
+				adwebv.loadUrl("javascript:prizewon()");
 				
 				ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);;
 			        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 500);
@@ -89,8 +100,9 @@ public class MainActivity extends Activity {
 	}
 	
 	
-	public static void loadAds(WebView webarg, String droidId) {
+	public static void loadAds(WebView webarg, String devicetag) {
 //		System.out.println("Enter loadAds");
+		String prize;
 		
 		if (webarg == null) { System.out.println("webarg null"); 
 		return;}
@@ -98,8 +110,23 @@ public class MainActivity extends Activity {
 		WebSettings webSettings = webarg.getSettings();
 		webSettings.setJavaScriptEnabled(true);		
 		
-		webarg.loadUrl("http://192.168.1.126:3000/adunit/"+droidId);		
+		if (Prefs.getPrizeMode(mnact)) {
+//			if (false) {
+			prize = "g";
+		} else {
+			prize = "a";
+		}
+		webarg.loadUrl("http://192.168.1.126:3000/adunit/"+prize+"/"+devicetag);		
 	}
+	
+	
+	public static void clearAds(WebView webarg, String devicetag) {
+
+		System.out.println("Enter clearAds");
+		
+		webarg.loadUrl("javascript:clearads()");	
+	}
+	
 	
 	public void toSettings(MenuItem item) {
 		
@@ -108,9 +135,8 @@ public class MainActivity extends Activity {
 	}
 	
 	
-	public void setPrizeMode(boolean pmode){
+	public static void changePrizeMode(){
 		
-		WebView webv = (WebView)findViewById(R.id.adViewer);
-		webv.loadUrl("javascript:prizemode("+pmode+")");
+		loadAds(adwebv, droidId);
 	}
 }

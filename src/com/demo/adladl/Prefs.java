@@ -1,6 +1,9 @@
 package com.demo.adladl;
 
 
+import com.demo.adladl.R;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -30,16 +33,21 @@ public class Prefs extends PreferenceFragment implements OnSharedPreferenceChang
      
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     	
-    	System.out.println("In SettingsActivity PrefChanged 1 : "+key);
-    	
         if (key.equals(getResources().getString(R.string.prizemode))) {
-//            Preference connectionPref = findPreference(key);
         	
-        	System.out.println("In SettingsActivity PrefChanged 2 : "+key);
-  
-            boolean pmode = sharedPreferences.getBoolean(key, false);
-            System.out.println("In SettingsActivity Prizemode : "+pmode);
-            MainActivity.mnact.setPrizeMode(pmode);
+ //           boolean pmode = sharedPreferences.getBoolean(key, false);
+ //           System.out.println("In SettingsActivity Prizemode : "+pmode);
+            MainActivity.changePrizeMode();
         }
     }
+    
+    public static boolean getPrizeMode(Context context) {
+
+		boolean pzmode = PreferenceManager.getDefaultSharedPreferences(
+				context).getBoolean(
+				context.getString(R.string.prizemode), false);
+		System.out.println("In getPrizeMode : "+pzmode);
+		return (pzmode);
+	}
+
 }

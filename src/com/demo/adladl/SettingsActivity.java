@@ -1,8 +1,6 @@
 package com.demo.adladl;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 
 public class SettingsActivity extends Activity  {
