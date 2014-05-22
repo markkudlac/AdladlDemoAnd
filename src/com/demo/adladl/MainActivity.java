@@ -112,11 +112,11 @@ public class MainActivity extends Activity {
 		
 		if (Prefs.getPrizeMode(mnact)) {
 //			if (false) {
-			prize = "g";
+			prize = "p";
 		} else {
 			prize = "a";
 		}
-		webarg.loadUrl("http://192.168.1.126:3000/adunit/"+prize+"/"+devicetag);		
+		webarg.loadUrl("http://" + serverUrl() + "/adunit/"+prize+"/"+devicetag);		
 	}
 	
 	
@@ -138,5 +138,19 @@ public class MainActivity extends Activity {
 	public static void changePrizeMode(){
 		
 		loadAds(adwebv, droidId);
+	}
+	
+	
+	
+	public static String serverUrl() {
+		
+		String httpserver;
+		
+		httpserver = Prefs.getHttpServer(mnact);
+		if (httpserver.length() > 14) {
+			return httpserver;
+		} else {
+			return "www.adladl.com";
+		}
 	}
 }

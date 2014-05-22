@@ -6,6 +6,10 @@
         android:title="@string/prizemode"
         android:defaultValue="false"/>
     
-
+	<EditTextPreference
+        android:key="@string/httpserver"
+        android:title="@string/httpserver"
+        android:defaultValue="" />
+	
 </PreferenceScreen>
 

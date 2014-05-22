@@ -46,8 +46,17 @@ public class Prefs extends PreferenceFragment implements OnSharedPreferenceChang
 		boolean pzmode = PreferenceManager.getDefaultSharedPreferences(
 				context).getBoolean(
 				context.getString(R.string.prizemode), false);
-		System.out.println("In getPrizeMode : "+pzmode);
+//		System.out.println("In getPrizeMode : "+pzmode);
 		return (pzmode);
 	}
 
+    
+    public static String getHttpServer(Context context) {
+
+		String xstr = PreferenceManager
+				.getDefaultSharedPreferences(context).getString(
+						context.getString(R.string.httpserver), "");
+
+		return (xstr);
+	}
 }
