@@ -64,6 +64,12 @@ public class MainActivity extends Activity {
 			
 			clearAds(adwebv, droidId);
 			return true;
+		} else if (id == R.id.instruct_on) {
+			Toast.makeText(getBaseContext(), "Instructions On",
+					Toast.LENGTH_LONG).show();
+			
+			adwebv.loadUrl("javascript:instructSet(0)");
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -122,8 +128,7 @@ public class MainActivity extends Activity {
 	
 	public static void clearAds(WebView webarg, String devicetag) {
 
-		System.out.println("Enter clearAds");
-		
+//		System.out.println("Enter clearAds");
 		webarg.loadUrl("javascript:clearads()");	
 	}
 	

@@ -9,4 +9,5 @@
 	<string name="prizemode">Prizemode</string>
 	<string name="httpserver">Server Address</string>
 	<string name="clearads">Clear Ads</string>
+	<string name="instruct_on">Instructions On</string>
 </resources>
