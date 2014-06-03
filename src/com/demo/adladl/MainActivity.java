@@ -1,11 +1,17 @@
 package com.demo.adladl;
 
+import com.demo.adladl.SettingsActivity;
+
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,18 +35,38 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		Intent intent = new Intent();
+		intent.setClassName("com.adserv.adladl", "com.adserv.adladl.HttpdService");
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		startService(intent);
+		
 		mnact = this;
 		setContentView(R.layout.activity_main);
 		
-		
-		adwebv = (WebView)findViewById(R.id.adViewer);
-		droidId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
-//		System.out.println("Android ID : " + droidId);
-		
-		loadAds(adwebv, droidId);
-		
 	}
 
+	
+	   private ServiceConnection mConnection = new ServiceConnection() {
+
+	        @Override
+	        public void onServiceConnected(ComponentName className,
+	                IBinder service) {
+	            // We've bound to LocalService, cast the IBinder and get LocalService instance
+	        	System.out.println("onServiceConnected in adladl");
+	        	
+	    		adwebv = (WebView)findViewById(R.id.adViewer);
+	    		droidId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+//	    		System.out.println("Android ID : " + droidId);
+	    		
+	    		loadAds(adwebv, droidId);
+	        }
+
+	        @Override
+	        public void onServiceDisconnected(ComponentName arg0) {
+	        	System.out.println("onServiceDisC in adladl");
+	        }
+	    };
+	    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -105,6 +131,13 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	public void toSettings(MenuItem item) {
+		
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+	
+	
 	
 	public static void loadAds(WebView webarg, String devicetag) {
 //		System.out.println("Enter loadAds");
@@ -122,22 +155,17 @@ public class MainActivity extends Activity {
 		} else {
 			prize = "a";
 		}
-		webarg.loadUrl("http://" + serverUrl() + "/adunit/"+prize+"/"+devicetag);		
+//		webarg.loadUrl("http://" + serverUrl() + "/adunit/"+prize+"/"+devicetag);	
+		webarg.loadUrl("http://localhost:8080/AdlHtml/adunit.html");	
 	}
 	
 	
 	public static void clearAds(WebView webarg, String devicetag) {
 
-//		System.out.println("Enter clearAds");
+		System.out.println("Enter clearAds test");
 		webarg.loadUrl("javascript:clearads()");	
 	}
 	
-	
-	public void toSettings(MenuItem item) {
-		
-		Intent intent = new Intent(this, SettingsActivity.class);
-		startActivity(intent);
-	}
 	
 	
 	public static void changePrizeMode(){
