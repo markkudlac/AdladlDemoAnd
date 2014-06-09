@@ -1,7 +1,5 @@
 package com.demo.adladl;
 
-import com.demo.adladl.SettingsActivity;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +13,7 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -148,6 +147,7 @@ public class MainActivity extends Activity {
 		
 		WebSettings webSettings = webarg.getSettings();
 		webSettings.setJavaScriptEnabled(true);		
+		webarg.addJavascriptInterface(mnact.new JsInterface(), "jsinterface");
 		
 		if (Prefs.getPrizeMode(mnact)) {
 //			if (false) {
@@ -186,4 +186,24 @@ public class MainActivity extends Activity {
 			return "www.adladl.com";
 		}
 	}
+	
+	
+	private final class JsInterface {
+		
+		@JavascriptInterface		
+	      public void vault() {
+	        	 System.out.println("In JsInterface vault");
+	        	 
+	         runOnUiThread(new Runnable() {
+	            
+	        	 @Override
+	            public void run() {
+
+	            	Intent intent = new Intent();
+	        		intent.setClassName("com.adserv.adladl", "com.adserv.adladl.CouponActivity");
+	        		startActivity(intent);
+	            }
+	         });
+	      }
+	   }
 }
