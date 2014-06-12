@@ -40,6 +40,9 @@
         android:onClick="click"
        />
 
+     <com.inmobi.monetization.IMBanner android:layout_width="320dp"
+android:layout_height="50dp" android:id="@+id/banner"
+adSize="15" appId="feb4c5de148f49dd888099f874fb455f" android:layout_marginTop="30dp" />
      
      <WebView 
     	android:id="@+id/adViewer"

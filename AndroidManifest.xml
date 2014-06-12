@@ -9,7 +9,12 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     
     <application
         android:allowBackup="true"
@@ -32,6 +37,32 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName="com.demo.adladl.MainActivity" >
         </activity>
+        
+        
+        <meta-data android:name="com.google.android.gms.version"
+           android:value="@integer/google_play_services_version" />
+        
+        <receiver
+            android:name="com.inmobi.commons.analytics.androidsdk.IMAdTrackerReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        
+        <activity android:name="com.inmobi.androidsdk.IMBrowserActivity"
+    android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize"
+    android:hardwareAccelerated="true" />
+        
+        <activity
+            android:name="com.gomob.di.qa.analytics.activity.PublisherAPI"
+            android:label="Adladl_publisher" >
+        </activity>
+        
+        <service
+            android:name="com.inmobi.commons.internal.ActivityRecognitionManager"
+            android:enabled="true" />
         
     </application>
 

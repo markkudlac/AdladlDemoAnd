@@ -1,5 +1,12 @@
 package com.demo.adladl;
 
+import com.inmobi.commons.InMobi;
+import com.inmobi.commons.InMobi.LOG_LEVEL;
+import com.inmobi.monetization.IMBanner;
+import com.inmobi.monetization.IMBannerListener;
+import com.inmobi.monetization.IMErrorCode;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,6 +49,38 @@ public class MainActivity extends Activity {
 		mnact = this;
 		setContentView(R.layout.activity_main);
 		
+		InMobi.initialize(this, "feb4c5de148f49dd888099f874fb455f");
+		IMBanner banner = (IMBanner) findViewById(R.id.banner);
+		banner.setRefreshInterval(10);
+		banner.loadBanner();
+		InMobi.setLogLevel(LOG_LEVEL.DEBUG);
+		
+		banner.setIMBannerListener(new IMBannerListener() {
+	        @Override
+	        public void onShowBannerScreen(IMBanner arg0) {
+	                }
+	            @Override
+	        public void onLeaveApplication(IMBanner arg0) {
+	        }
+	        @Override
+	        public void onDismissBannerScreen(IMBanner arg0) {
+	        }
+	                @Override
+	        public void onBannerRequestFailed(IMBanner banner, IMErrorCode errorCode) {
+	                	Toast.makeText(getBaseContext(), "Failed : "+errorCode.toString(),
+	        					Toast.LENGTH_LONG).show();
+	                	System.out.println("onBannerRequestFailed : "+ errorCode.toString());
+	        }
+	        @Override
+	        public void onBannerRequestSucceeded(IMBanner arg0) {
+	        	Toast.makeText(getBaseContext(), "onBannerRequestSucceeded",
+    					Toast.LENGTH_LONG).show();
+//	        	System.out.println("onBannerRequestSucceeded");
+	                }
+	                @Override
+	        public void onBannerInteraction(IMBanner arg0, Map<String, String> arg1) {
+	        }
+	    });
 	}
 
 	
@@ -126,6 +165,7 @@ public class MainActivity extends Activity {
 				textv.setTextColor(Color.rgb(0,0,0));
 			}
 			
+
 			return;
 		}
 	}
