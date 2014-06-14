@@ -34,10 +34,7 @@ public class Prefs extends PreferenceFragment implements OnSharedPreferenceChang
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     	
         if (key.equals(getResources().getString(R.string.prizemode))) {
-        	
- //           boolean pmode = sharedPreferences.getBoolean(key, false);
- //           System.out.println("In SettingsActivity Prizemode : "+pmode);
-            MainActivity.changePrizeMode();
+        	MainActivity.adl.setPrize();
         }
     }
     
