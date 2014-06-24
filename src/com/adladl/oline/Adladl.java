@@ -9,6 +9,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -24,7 +26,7 @@ public class Adladl {
 	private  Activity activity;
 	
 	private int success_cnt = 0;
-	private String prize = "a";
+//	private String prize = "a";
 	
 	public Adladl(Activity activity, String app_reg, WebView adwebv){
 		this.adwebv = adwebv;
@@ -68,23 +70,17 @@ public class Adladl {
    
     
     public void loadAds() {
-//		System.out.println("Enter loadAds");
 		
 		if (adwebv == null) { 
 			System.out.println("webarg null"); 
 			return;
 		}
 
-		/*
-		if (Prefs.getPrizeMode(mnact)) {
-			prize = "p";
-		} else {
-			prize = "a";
-		}
-		*/
+		String xurl = "http://localhost:8080/AdlHtml/adunit.html?prize="+Prefs.getPrizeMode(activity)+
+				"&app_reg="+app_reg;
 		
-//		webarg.loadUrl("http://" + serverUrl() + "/adunit/"+prize+"/"+devicetag);	
-		adwebv.loadUrl("http://localhost:8080/AdlHtml/adunit.html?prize="+prize+"&app_reg="+app_reg);	
+//		System.out.println("Enter loadAds : "+xurl);
+		adwebv.loadUrl(xurl);	
 	}
     
 
@@ -98,7 +94,6 @@ public class Adladl {
 		
 		@JavascriptInterface		
 	      public void vault() {
-	        	 System.out.println("In JsInterface vault");
 	        	 
 	        activity.runOnUiThread(new Runnable() {
 	            
@@ -111,6 +106,12 @@ public class Adladl {
 	            }
 	         });
 	      }
+		
+		
+		@JavascriptInterface
+		public boolean localHref(){
+			return(!isWifiConected(activity));
+		}
 	   }
 	
 	
@@ -147,13 +148,20 @@ public class Adladl {
 	}
 	
 	
-	public void setPrize(){
+    public static boolean isWifiConected(Context context) {
+     	
+   	 WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+   	 
+   	 if (wifiMgr != null && wifiMgr.isWifiEnabled()){
+   		 
+   		 ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		if (Prefs.getPrizeMode(activity)){
-			prize = "p";
-		} else {
-			prize = "a";
-		}
-		loadAds();
-	}
+   		 if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected()){
+//   			 System.out.println("WiFi is connected.");
+	             return(true);
+   		 }
+   	 }
+//   	 System.out.println("WiFi NOT connected.");
+    	return(false);
+    }
 }

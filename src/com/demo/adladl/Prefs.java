@@ -25,18 +25,21 @@ public class Prefs extends PreferenceFragment implements OnSharedPreferenceChang
          getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	 }
 	 
+	 
      @Override
      public void onPause() {
          super.onPause();
          getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
      }
      
+     
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     	
         if (key.equals(getResources().getString(R.string.prizemode))) {
-        	MainActivity.adl.setPrize();
+        	MainActivity.adl.loadAds();
         }
     }
+    
     
     public static boolean getPrizeMode(Context context) {
 
@@ -47,6 +50,15 @@ public class Prefs extends PreferenceFragment implements OnSharedPreferenceChang
 		return (pzmode);
 	}
 
+    
+    public static boolean getUseAdNet(Context context) {
+
+		boolean useadnet = PreferenceManager.getDefaultSharedPreferences(
+				context).getBoolean(
+				context.getString(R.string.useadnet), false);
+
+		return (useadnet);
+	}
     
     public static String getHttpServer(Context context) {
 

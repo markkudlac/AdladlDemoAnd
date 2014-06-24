@@ -42,7 +42,9 @@ public class MainActivity extends Activity {
 		adl = new Adladl(this, "xxx", (WebView)findViewById(R.id.adViewer));
 		adl.offline(findViewById(R.id.banner));
 		
-		turnInMobiOn(this);
+		if (Prefs.getUseAdNet(this)){
+			turnInMobiOn(this);
+		}
 		
 	}
 
@@ -145,6 +147,10 @@ public class MainActivity extends Activity {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				try {
+					Toast.makeText(getBaseContext(), "AdMobi network started",
+	    					Toast.LENGTH_LONG).show();
+		        	System.out.println("AdMobi network started");
+					
 					InMobi.initialize(ctx, "feb4c5de148f49dd888099f874fb455f");
 					banner = (IMBanner) findViewById(R.id.banner);
 					banner.setRefreshInterval(10);
